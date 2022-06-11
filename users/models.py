@@ -42,9 +42,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     objects = CustomUserManager()
 
     USERNAME_FIELD = "username"
-    # REQUIRED_FIELDS = [
-    #     "username",
-    # ]
 
     ordering = ("created",)
 

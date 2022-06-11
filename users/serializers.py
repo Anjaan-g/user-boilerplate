@@ -129,6 +129,21 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         token['username'] = user.username
         token['role'] = user.role
         return str(token.access_token)
+    
+    def validate(self, attrs):
+        data = super().validate(attrs)
+        try:
+            self.user = CustomUser.objects.get(user_uuid=data['user_uuid'])
+        except ObjectDoesNotExist:
+            return 'User with provided UUID does not exist !!!'
+        print(self.user)
+        refresh = self.get_token(self.user)
+        data['refresh'] = str(refresh)
+        data['access'] = str(refresh.access_token)
+        if api_settings.UPDATE_LAST_LOGIN:
+            update_last_login(None, self.user)
+        print(data)
+        return data
 
 
 class EditUserSerializer(serializers.ModelSerializer):
