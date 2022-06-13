@@ -22,6 +22,7 @@ virtualenv:
 install:
   - pip install -q Django==$DJANGO_VERSION
   - python setup.py -q install
+  - pip install -r requirements.txt
 # command to run tests
 script:
   - pytest
