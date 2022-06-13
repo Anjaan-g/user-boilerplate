@@ -13,8 +13,8 @@ python:
 # command to install dependencies
 
 env:
-  - DJANGO_VERSION=2.1.13
-  - DJANGO_VERSION=2.2.6
+  - DJANGO_VERSION=3.0.*
+  - DJANGO_VERSION=4.0.*
 
 virtualenv:
   system_site_packages: true
