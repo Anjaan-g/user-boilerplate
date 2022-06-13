@@ -11,7 +11,7 @@ from rest_framework import mixins, permissions, status, viewsets
 from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.filters import SearchFilter
 from rest_framework.generics import ListAPIView
-from rest_framework.permissions import IsAdminUser, AllowAny
+from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from users.models import ROLES, CustomUser
@@ -132,6 +132,7 @@ class AdminViewSet(
             )
 
 
+@method_decorator(name="post", decorator=swagger_auto_schema(tags=["Admin Actions"]))
 class PromoteToAdminAPI(APIView):
     permission_classes = (IsSuperUser,)
 
@@ -153,6 +154,7 @@ class PromoteToAdminAPI(APIView):
             return Response({"message": "User Does not exists"}, status=200)
 
 
+@method_decorator(name="post", decorator=swagger_auto_schema(tags=["Admin Actions"]))
 class DemoteToNormalUserAPI(APIView):
     permission_classes = (IsSuperUser,)
 
@@ -173,6 +175,7 @@ class DemoteToNormalUserAPI(APIView):
         except ObjectDoesNotExist:
             return Response({"message": "User Does not exists"}, status=200)
 
+
 @method_decorator(name="list", decorator=swagger_auto_schema(tags=["Users List"]))
 @method_decorator(name="update", decorator=swagger_auto_schema(tags=["Users List"]))
 @method_decorator(name="retrieve", decorator=swagger_auto_schema(tags=["Users List"]))
@@ -187,9 +190,7 @@ class UserView(
 
     queryset = CustomUser.objects.all()
     serializer_class = UserSerializer
-    permission_classes_by_action = {
-        "list": [IsAdminUser]
-    }
+    permission_classes_by_action = {"list": [IsAdminUser]}
     permission_classes = (AllowAny,)
     # pagination_class = CustomPageNumberPagination
     filter_backends = [DjangoFilterBackend, SearchFilter]
@@ -207,6 +208,7 @@ class UserView(
             return [permission() for permission in self.permission_classes]
 
 
+@method_decorator(name="list", decorator=swagger_auto_schema(tags=["Admin Actions"]))
 class ListAdminView(
     mixins.RetrieveModelMixin,
     mixins.UpdateModelMixin,
@@ -232,6 +234,7 @@ class ListAdminView(
             return [permission() for permission in self.permission_classes]
 
 
+@method_decorator(name="post", decorator=swagger_auto_schema(tags=["Admin Actions"]))
 class ChangeRoleAPI(APIView):
     """
     {
@@ -284,6 +287,7 @@ class ChangeRoleAPI(APIView):
         return Response({"message": f"Successfully Changed to {role}"})
 
 
+@method_decorator(name="list", decorator=swagger_auto_schema(tags=["Admin Actions"]))
 class UserListView(ListAPIView):
     """List all users"""
 

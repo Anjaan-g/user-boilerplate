@@ -19,7 +19,7 @@ from users.serializers import MyTokenObtainPairSerializer, ReadUserSerializer, U
 
 # from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
-
+@method_decorator(name="post", decorator=swagger_auto_schema(tags=["AuthManagement"]))
 class RegisterUserView(CreateAPIView):
     queryset = get_user_model().objects.all()
     serializer_class = UserSerializer
@@ -54,7 +54,7 @@ class LoginAPI(TokenObtainPairView):
         except ObjectDoesNotExist:
             return Response({"message": "User Does not exists"}, status=400)
 
-
+@method_decorator(name="post", decorator=swagger_auto_schema(tags=["AuthManagement"]))
 class VerifyTokenViewSet(APIView):
     permission_class = (AllowAny,)
     def post(self, request):
