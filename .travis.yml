@@ -10,6 +10,6 @@ install:
 # command to run tests
 script:
   - mkdir logs
-  - python manage.py makemigrations && migrate
+  - python manage.py makemigrations && python manage.py migrate
 
 
